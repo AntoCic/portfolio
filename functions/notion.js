@@ -1,19 +1,25 @@
+const { Client } = require('@notionhq/client');
 
-// const { Client } = require('@notionhq/client');
-
-// const { NOTION_KEY, NOTION_DB } = process.env;
-// let durationOp = {}
+const { NOTION_KEY, NOTION_DB } = process.env;
 
 // Initializing a client
-// const notion = new Client({ auth: NOTION_KEY });
+const notion = new Client({ auth: NOTION_KEY });
 
 exports.handler = async function (event, context) {
-    return {
-        statusCode: 200,
-        body: JSON.stringify({
-            msg: 'hello da dfedfeanto'
-        }),
-    };
+    try {
+        let response = {};
+        response = await notion.databases.retrieve({ database_id: NOTION_DB });
+        return {
+            statusCode: 200,
+            body: JSON.stringify(response.properties),
+        };
+    } catch (e) {
+        console.error(e);
+        return {
+            statusCode: 500,
+            body: e.toString(),
+        };
+    }
     // try {
     //     let response = {};
     //     const body = (event.body ? JSON.parse(event.body) : '');
