@@ -5,160 +5,242 @@ const { NOTION_KEY, NOTION_DB } = process.env;
 // Initializing a client
 const notion = new Client({ auth: NOTION_KEY });
 
+PersonalName = 'Antonino Cicala';
+
 exports.handler = async function (event, context) {
     try {
+        //  var to send
         let response = {};
-        response = await notion.databases.retrieve({ database_id: NOTION_DB });
+        let res;
+        switch (event.httpMethod) {
+            case 'GET':
+                switch (getParameter(event)) {
+                    case 'db-structure':
+                        res = await notion.databases.retrieve({ database_id: NOTION_DB });
+                        response = res.properties;
+                        break;
+                    case 'user':
+                        response = await getUser();
+                        break;
+                    case 'experience':
+                        response = await getExperiences();
+                        break;
+                    case 'visible-pj':
+                        response = await getVisiblePj();
+                        break;
+                    case 'hidden-pj':
+                        response = await getHiddenPj();
+                        break;
+                    case 'all-db':
+                        res = await notion.databases.query({ database_id: NOTION_DB });
+                        dbFullData = {};
+                        for (const page of res.results) {
+                            dbFullData[page.id] = {
+                                name: page.properties["Name"].title[0].plain_text,
+                                // duration: ts.properties["Duration"].select.name ? ts.properties["Duration"].select.name : "",
+                                // urgImp: ts.properties["Urgent-Important"].select.name ? ts.properties["Urgent-Important"].select.name : "",
+                            }
+                        }
+                        response = dbFullData
+                        break;
+                    case 'all':
+                        res = await notion.databases.retrieve({ database_id: NOTION_DB });
+                        const dbStructure = res.properties;
+                        res = await notion.databases.query({ database_id: NOTION_DB });
+                        dbFullData = res.results;
+                        response = { dbStructure, dbFullData };
+                        break;
+                    default:
+                        return returnError(400, 'Bad request.');
+                }
+                break;
+
+            case 'POST':
+
+                break;
+
+            case 'PATCH':
+
+                break;
+
+            default:
+                return returnError(405, 'Invalid request type.');
+        }
+
+        //  send response 
         return {
             statusCode: 200,
-            body: JSON.stringify(response.properties),
+            body: JSON.stringify(response),
         };
+
     } catch (e) {
-        console.error(e);
-        return {
-            statusCode: 500,
-            body: e.toString(),
-        };
+        console.log(e);
+        return returnError(500, e.toString().substr(16));
     }
-    // try {
-    //     let response = {};
-    //     const body = (event.body ? JSON.parse(event.body) : '');
-    //     console.log(body);
-    //     switch (event.httpMethod) {
-    //         // get
-    //         case 'GET':
-    //             switch (event.queryStringParameters.data_req) {
-    //                 case 'properties':
-    //                     response = await notion.databases.retrieve({ database_id: NOTION_DB });
-    //                     for (const key of response.properties.Duration.select.options) {
-    //                         const arrTime = key.name.split(":");
-    //                         durationOp[key.id] = (Number(arrTime[0]) * 60) + Number(arrTime[1])
-    //                     }
-    //                     break;
-    //                 case 'TasksNoChecked':
-    //                     const resToParse = await notion.databases.query({
-    //                         database_id: NOTION_DB,
-    //                         filter: {
-    //                             property: "av%3DI",
-    //                             checkbox: {
-    //                                 equals: false
-    //                             }
-    //                         },
-    //                     });
-    //                     response.results = [];
-    //                     for (const ts of resToParse.results) {
-    //                         response.results.push({
-    //                             id: ts.id,
-    //                             done: ts.properties[""].checkbox,
-    //                             title: ts.properties["Task"].title[0].plain_text,
-    //                             duration: ts.properties["Duration"].select.name ? ts.properties["Duration"].select.name : "",
-    //                             urgImp: ts.properties["Urgent-Important"].select.name ? ts.properties["Urgent-Important"].select.name : "",
-    //                         })
-    //                     }
-    //                     break;
-    //                 default:
-    //                     response = { msg: "richesta non conforme" };
-    //                     break;
-    //             }
-    //             break;
-    //         // post
-    //         case 'POST':
-
-    //             switch (event.queryStringParameters.data_req) {
-    //                 case 'fullDb':
-    //                     response = await notion.databases.query({ database_id: NOTION_DB });
-    //                     break;
-    //                 case 'addTask':
-    //                     response = await addTask(body);
-    //                     break;
-    //                 default:
-    //                     response = { msg: "richesta non conforme" };
-    //                     break;
-    //             }
-
-    //             break;
-    //         // PATCH 
-    //         case 'PATCH':
-
-    //             switch (event.queryStringParameters.data_req) {
-    //                 case 'checkTask':
-    //                     response = await notion.pages.update({
-    //                         page_id: body.pageId,
-    //                         properties: {
-    //                             'av%3DI': {
-    //                                 checkbox: true,
-    //                             },
-    //                         },
-    //                     });
-    //                     break;
-    //                 default:
-    //                     response = { msg: "richesta non conforme" };
-    //                     break;
-    //             }
-
-
-
-    //             break;
-    //         default:
-    //             break;
-    //     }
-
-    //     // console.log(response);
-
-    //     return {
-    //         statusCode: 200,
-    //         body: JSON.stringify(response),
-    //     };
-    // } catch (e) {
-    //     console.error(e);
-    //     return {
-    //         statusCode: 500,
-    //         body: e.toString(),
-    //     };
-    // }
 };
 
-async function addTask({ urgImp, title, duration }) {
-    const d = new Date();
-    const dd = new Date();
-    dd.setMinutes(dd.getMinutes() + durationOp[duration]);
-    const response = await notion.pages.create({
-        icon: {
-            type: "emoji",
-            emoji: "👽",
+function returnError(statusCode, error) {
+    return {
+        statusCode,
+        body: JSON.stringify({ error })
+    }
+}
+
+function getParameter(event) {
+    let parmetro = event.path.split("/");
+    if (parmetro.length === 4) {
+        return parmetro[3]
+    } else {
+        return false
+    }
+}
+function utilityJsonParse(text) {
+    text = text.replaceAll("“", '"');
+    text = text.replaceAll("”", '"');
+    text = `{ ${text} }`
+    return JSON.parse(text);
+}
+
+async function getUser() {
+    res = await notion.databases.query({
+        database_id: NOTION_DB,
+        filter: {
+            and: [
+                {
+                    property: 'title',
+                    title: {
+                        equals: 'user'
+                    }
+                },
+                {
+                    property: 'wW%5Eb',
+                    select: {
+                        equals: 'user'
+                    }
+                }
+            ]
         },
-        parent: {
-            type: "database_id",
-            database_id: NOTION_DB,
-        },
-        properties: {
-            title: {
-                title: [
-                    {
-                        type: "text",
-                        text: {
-                            content: title,
-                        },
-                    },
-                ],
-            },
-            "Ll%60X": { //urgImp
-                "select": {
-                    "id": urgImp
-                }
-            },
-            "nLDG": {  //duration
-                "select": {
-                    "id": duration
-                }
-            },
-            "J%7D%7DN": { //data
-                "date": {
-                    "start": d.toISOString(),
-                    "end": dd.toISOString()
-                }
+    });
+    const utility = utilityJsonParse(res.results[0].properties.utility.rich_text[0].plain_text);
+    let technologies = [];
+        if (res.results[0].properties.technologies.multi_select.length) {
+            for(const tecnology of res.results[0].properties.technologies.multi_select){
+                technologies.push(tecnology.name)
+            }
+        }
+    const user = {
+        name: PersonalName,
+        img: res.results[0].properties.img.rich_text.length ? res.results[0].properties.img.rich_text[0].plain_text : null,
+        email: utility.email,
+        phone: utility.phone,
+        rule: res.results[0].properties.rule.rich_text.length ? res.results[0].properties.rule.rich_text[0].plain_text : null,
+        site_link: res.results[0].properties.site_link.rich_text.length ? res.results[0].properties.site_link.rich_text[0].plain_text : null,
+        git_link: res.results[0].properties.git_link.rich_text.length ? res.results[0].properties.git_link.rich_text[0].plain_text : null,
+        linkedin_link: utility.linkedin_link,
+        description: res.results[0].properties.description.rich_text.length ? res.results[0].properties.description.rich_text[0].plain_text : null,
+        location: res.results[0].properties.location.rich_text.length ? res.results[0].properties.location.rich_text[0].plain_text : null,
+        date: res.results[0].properties.date.date ? res.results[0].properties.date.date.start : null,
+        technologies
+    };
+    return user
+}
+async function getExperiences() {
+    const res = await notion.databases.query({
+        database_id: NOTION_DB,
+        filter: {
+            property: 'wW%5Eb',
+            select: {
+                equals: 'experience'
             }
         },
     });
-    return response
+
+    let experiences = {};
+    for (const page of res.results) {
+        experiences[page.id] = {
+            name: page.properties["Name"].title[0].plain_text,
+            description: page.properties.description.rich_text.length ? page.properties.description.rich_text[0].plain_text : null,
+            rule: page.properties.rule.rich_text.length ? page.properties.rule.rich_text[0].plain_text : null,
+            location: page.properties.location.rich_text.length ? page.properties.location.rich_text[0].plain_text : null,
+            priority: page.properties.priority.number ? page.properties.priority.number : 0,
+            dateStart: page.properties.date.date ? page.properties.date.date.start : null,
+            dateEnd: page.properties.date.date ? page.properties.date.date.end : null,
+        }
+    }
+    return experiences
+}
+async function getVisiblePj() {
+    res = await notion.databases.query({
+        database_id: NOTION_DB,
+        filter: {
+            property: 'wW%5Eb',
+            select: {
+                equals: 'visible'
+            }
+
+        },
+    });
+
+    let visiblePj = {};
+    for (const page of res.results) {
+        let technologies = [];
+        if (page.properties.technologies.multi_select.length) {
+            for(const tecnology of page.properties.technologies.multi_select){
+                technologies.push(tecnology.name)
+            }
+        }
+        visiblePj[page.id] = {
+            name: page.properties["Name"].title[0].plain_text,
+            img: page.properties.img.rich_text.length ? page.properties.img.rich_text[0].plain_text : null,
+            site_link: page.properties.site_link.rich_text.length ? page.properties.site_link.rich_text[0].plain_text : null,
+            git_link: page.properties.git_link.rich_text.length ? page.properties.git_link.rich_text[0].plain_text : null,
+            description: page.properties.description.rich_text.length ? page.properties.description.rich_text[0].plain_text : null,
+            utility: page.properties.utility.rich_text.length ? page.properties.utility.rich_text[0].plain_text : null,
+            rule: page.properties.rule.rich_text.length ? page.properties.rule.rich_text[0].plain_text : null,
+            location: page.properties.location.rich_text.length ? page.properties.location.rich_text[0].plain_text : null,
+            priority: page.properties.priority.number ? page.properties.priority.number : 0,
+            dateStart: page.properties.date.date ? page.properties.date.date.start : null,
+            dateEnd: page.properties.date.date ? page.properties.date.date.end : null,
+            technologies
+        }
+    }
+    return visiblePj;
+}
+
+async function getHiddenPj() {
+    res = await notion.databases.query({
+        database_id: NOTION_DB,
+        filter: {
+            property: 'wW%5Eb',
+            select: {
+                equals: 'hidden'
+            }
+
+        },
+    });
+
+    let hiddenPj = {};
+    for (const page of res.results) {
+        let technologies = [];
+        if (page.properties.technologies.multi_select.length) {
+            for(const tecnology of page.properties.technologies.multi_select){
+                technologies.push(tecnology.name)
+            }
+        }
+        hiddenPj[page.id] = {
+            name: page.properties["Name"].title[0].plain_text,
+            img: page.properties.img.rich_text.length ? page.properties.img.rich_text[0].plain_text : null,
+            site_link: page.properties.site_link.rich_text.length ? page.properties.site_link.rich_text[0].plain_text : null,
+            git_link: page.properties.git_link.rich_text.length ? page.properties.git_link.rich_text[0].plain_text : null,
+            description: page.properties.description.rich_text.length ? page.properties.description.rich_text[0].plain_text : null,
+            utility: page.properties.utility.rich_text.length ? page.properties.utility.rich_text[0].plain_text : null,
+            rule: page.properties.rule.rich_text.length ? page.properties.rule.rich_text[0].plain_text : null,
+            location: page.properties.location.rich_text.length ? page.properties.location.rich_text[0].plain_text : null,
+            priority: page.properties.priority.number ? page.properties.priority.number : 0,
+            dateStart: page.properties.date.date ? page.properties.date.date.start : null,
+            dateEnd: page.properties.date.date ? page.properties.date.date.end : null,
+            technologies
+        }
+    }
+    return hiddenPj;
 }
