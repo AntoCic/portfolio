@@ -9,7 +9,7 @@
           </RouterLink>
         </div>
         <div class="col-auto">
-          <a href="http://" target="_blank" rel="download curriculum">
+          <a href="/Antonino.Cicala.pdf" rel="download curriculum" download>
            <img src="../assets/img/ico_dw_cv.svg" alt="">
           </a>
         </div>

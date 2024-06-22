@@ -5,7 +5,7 @@
 </template>
 
 <script>
-// import { store } from '../store.js';
+import { store } from './store.js';
 import axios from 'axios'
 import AppHeader from './components/AppHeader.vue'
 import AppMain from './components/AppMain.vue'
@@ -14,23 +14,21 @@ export default {
   components: { AppHeader, AppMain, AppFooter },
   data() {
     return {
-      // store,
+      store,
     }
   },
   methods: {
     fetchNotion() {
-            axios.get('/api/notion').then((res) => {
-                console.log(res);
-                // this.store.fullDb = res.data.results
-                // console.log("task aggiunta");
-            }
-            );
-            // console.log(this.store);
-        },
-  },
-  computed: {
+      axios.get('/api/notion').then((res) => {
+        this.store.user = res.data.user;
+        this.store.experiences = res.data.experiences;
+        this.store.visiblePj = res.data.visiblePj;
+      }
+      );
+    },
   },
   mounted() {
+    console.log('@@@@ App @@@@');
     this.fetchNotion();
   }
 }
