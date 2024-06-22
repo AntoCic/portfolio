@@ -1,11 +1,7 @@
 <template>
-    <main class="">
+    <main class="main">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <RouterView />
-                </div>
-            </div>
+            <RouterView />
         </div>
     </main>
 </template>
@@ -22,4 +18,9 @@ export default {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped> 
+.hjufshduih{
+    display: inline-block;
+min-height: 500px;
+}
+</style>

@@ -19,7 +19,7 @@ exports.handler = async function (event, context) {
                 response = {
                     user: await getUser(),
                     experiences: await getExperiences(),
-                    experiences: await getVisiblePj(),
+                    visiblePj: await getVisiblePj(),
                 };
                 break;
             case 'POST':
