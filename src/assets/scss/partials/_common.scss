@@ -1,5 +1,15 @@
 @use './variables' as *;
 
 body {
-  font-family: $font-stack;
+  min-height: 100vh;
+}
+
+#app {
+  background-color: #1C405D;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main{
+  flex-grow: 1;
 }

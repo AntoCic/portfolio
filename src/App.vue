@@ -31,8 +31,4 @@ export default {
 /*
 @use '../assets/scss/partials/_variables.scss' as *;
 */
-#app {
-  background-color: var(--bs-dark);
-  min-height: 100vh;
-}
 </style>

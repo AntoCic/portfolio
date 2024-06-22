@@ -1,12 +1,21 @@
 <template>
-  <header class="header text-center py-5 ">
-    <a href="https://github.com/AntoCic" target="_blank">
-      <img src="../assets/img/logo.png" class="logo" alt="Vue logo" />
-    </a>
-    <nav class="text-white text-center">
-      <RouterLink to="/" class="btn" :class="$route.fullPath === '/' ? 'btn-light' : 'btn-outline-light'">Home</RouterLink>
-      <RouterLink to="/about" class="btn" :class="$route.fullPath === '/about' ? 'btn-light' : 'btn-outline-light'">About</RouterLink>
-    </nav>
+  <header class="header">
+    <div class="container">
+      <nav class="row align-items-center p-2 my-3">
+        <div class="col amsterdam-four text-gold">
+          <RouterLink to="/" class="h3">
+            <img src="../assets/img/logo.png" class="logo align-text-top" alt="Vue logo" />
+            Antonino Cicala
+          </RouterLink>
+        </div>
+        <div class="col-auto">
+          <a href="http://" target="_blank" rel="download curriculum">
+           <img src="../assets/img/ico_dw_cv.svg" alt="">
+          </a>
+        </div>
+      </nav>
+      <div class="row"><hr></div>
+    </div>
   </header>
 </template>
 
@@ -16,10 +25,10 @@
 
 <style lang="scss" scoped>
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  width: 70px;
   will-change: filter;
   transition: filter 300ms;
+  vertical-align: baseline;
 }
 
 .logo:hover {
