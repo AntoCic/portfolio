@@ -1,11 +1,13 @@
 const { Client } = require('@notionhq/client');
 
-const { NOTION_KEY, NOTION_DB } = process.env;
+const { NOTION_KEY, NOTION_DB, USER_KEY } = process.env;
 
 // Initializing a client
 const notion = new Client({ auth: NOTION_KEY });
 
 PersonalName = 'Antonino Cicala';
+
+let password = '';
 
 exports.handler = async function (event, context) {
     try {
@@ -14,53 +16,37 @@ exports.handler = async function (event, context) {
         let res;
         switch (event.httpMethod) {
             case 'GET':
-                switch (getParameter(event)) {
-                    case 'db-structure':
-                        res = await notion.databases.retrieve({ database_id: NOTION_DB });
-                        response = res.properties;
-                        break;
-                    case 'user':
-                        response = await getUser();
-                        break;
-                    case 'experience':
-                        response = await getExperiences();
-                        break;
-                    case 'visible-pj':
-                        response = await getVisiblePj();
-                        break;
-                    case 'hidden-pj':
-                        response = await getHiddenPj();
-                        break;
-                    case 'all-db':
-                        res = await notion.databases.query({ database_id: NOTION_DB });
-                        dbFullData = {};
-                        for (const page of res.results) {
-                            dbFullData[page.id] = {
-                                name: page.properties["Name"].title[0].plain_text,
-                                // duration: ts.properties["Duration"].select.name ? ts.properties["Duration"].select.name : "",
-                                // urgImp: ts.properties["Urgent-Important"].select.name ? ts.properties["Urgent-Important"].select.name : "",
-                            }
-                        }
-                        response = dbFullData
-                        break;
-                    case 'all':
-                        res = await notion.databases.retrieve({ database_id: NOTION_DB });
-                        const dbStructure = res.properties;
-                        res = await notion.databases.query({ database_id: NOTION_DB });
-                        dbFullData = res.results;
-                        response = { dbStructure, dbFullData };
-                        break;
-                    default:
-                        return returnError(400, 'Bad request.');
-                }
+                response = {
+                    user: await getUser(),
+                    experiences: await getExperiences(),
+                    experiences: await getVisiblePj(),
+                };
                 break;
-
             case 'POST':
-
-                break;
-
-            case 'PATCH':
-
+                if (isAuthorized()) {
+                    switch (getParameter(event)) {
+                        case 'db-structure':
+                            res = await notion.databases.retrieve({ database_id: NOTION_DB });
+                            response = res.properties;
+                            break;
+                        case 'user':
+                            response = await getUser();
+                            break;
+                        case 'experience':
+                            response = await getExperiences();
+                            break;
+                        case 'visible-pj':
+                            response = await getVisiblePj();
+                            break;
+                        case 'hidden-pj':
+                            response = await getHiddenPj();
+                            break;
+                        default:
+                            return returnError(400, 'Bad request.');
+                    }
+                } else {
+                    return returnError(401, 'Unauthorized');
+                }
                 break;
 
             default:
@@ -78,6 +64,10 @@ exports.handler = async function (event, context) {
         return returnError(500, e.toString().substr(16));
     }
 };
+
+function isAuthorized() {
+    return USER_KEY === password ? true : false
+}
 
 function returnError(statusCode, error) {
     return {
@@ -123,11 +113,11 @@ async function getUser() {
     });
     const utility = utilityJsonParse(res.results[0].properties.utility.rich_text[0].plain_text);
     let technologies = [];
-        if (res.results[0].properties.technologies.multi_select.length) {
-            for(const tecnology of res.results[0].properties.technologies.multi_select){
-                technologies.push(tecnology.name)
-            }
+    if (res.results[0].properties.technologies.multi_select.length) {
+        for (const tecnology of res.results[0].properties.technologies.multi_select) {
+            technologies.push(tecnology.name)
         }
+    }
     const user = {
         name: PersonalName,
         img: res.results[0].properties.img.rich_text.length ? res.results[0].properties.img.rich_text[0].plain_text : null,
@@ -185,7 +175,7 @@ async function getVisiblePj() {
     for (const page of res.results) {
         let technologies = [];
         if (page.properties.technologies.multi_select.length) {
-            for(const tecnology of page.properties.technologies.multi_select){
+            for (const tecnology of page.properties.technologies.multi_select) {
                 technologies.push(tecnology.name)
             }
         }
@@ -223,7 +213,7 @@ async function getHiddenPj() {
     for (const page of res.results) {
         let technologies = [];
         if (page.properties.technologies.multi_select.length) {
-            for(const tecnology of page.properties.technologies.multi_select){
+            for (const tecnology of page.properties.technologies.multi_select) {
                 technologies.push(tecnology.name)
             }
         }
