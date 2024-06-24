@@ -12,7 +12,31 @@
     <hr>
 
     <h2>Project</h2>
-    <div v-for="(pj, key) in store.visiblePj" :key="key"
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+
+      <div class="col py-3" v-for="(pj, key) in store.visiblePj" :key="key">
+        <div class="card p-2 text-azul bg-light bg-opacity-10 border-0 rounded h-100">
+          <img :src="pj.img" class="card-img-top" alt="logo-progetto">
+          <div class="card-body">
+            <h5 class="card-title">{{ pj.name }}</h5>
+            <p class="card-text small">{{ pj.rule }}</p>
+            <div class="mb-2">
+              <span v-for="technology in pj.technologies" class="badge text-bg-primary me-2">{{ technology }}</span>
+            </div>
+            <p class="card-text">{{ pj.description }}</p>
+            <p>Data: {{ pj.dateStart }} <template v-if="pj.dateEnd">- {{ pj.dateEnd }}</template> </p>
+            <div class="mt-auto">
+              <a v-if="pj.site_link" :href="pj.site_link" target="_blank" class="btn btn-link">Stite To Try</a>
+              <a v-if="pj.git_link" :href="pj.git_link" target="_blank" class="btn btn-link">Github</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div v-for="(pj, key) in store.visiblePj" :key="key"
       class="card text-azul bg-light bg-opacity-10 border-0 rounded mb-2">
       <div class="card-body">
         <h5 class="card-title">{{ pj.name }}</h5>
@@ -23,11 +47,11 @@
         <p class="card-text">{{ pj.description }}</p>
         <p>Data: {{ pj.dateStart }} - {{ pj.dateEnd }}</p>
         <p>Location: {{ pj.location }}</p>
-        <img :src="pj.img" class="border rounded" width="100" height="100" alt="">
+        <img :src="pj.img" width="100" height="100" alt="">
         <a v-if="pj.site_link" :href="pj.site_link" target="_blank" class="btn btn-link">Stite To Try</a>
         <a v-if="pj.git_link" :href="pj.git_link" target="_blank" class="btn btn-link">Github</a>
       </div>
-    </div>
+    </div> -->
 
     <hr>
 
