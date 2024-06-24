@@ -1,25 +1,30 @@
 <template>
-    <div class="spinner-box my-5 mx-auto">
-        <div class="spinner"></div>
-        <img src="../assets/img/notion.svg" alt="">
+    <div  @click="store.infoLoad = true">
+        <div class="spinner-box my-5 mx-auto">
+            <div class="spinner"></div>
+            <img src="../assets/img/notion.svg" alt="">
+        </div>
+        <div class="text-center text-azul px-4">
+            <h3 v-if="!store.user">Getting data from notion</h3>
+            <p>Il portfolio è interamente modificabile tramite una pagina di Notion. Utilizzando le API fornite da
+                Notion
+            </p>
+            <p>Il sito è stato realizzato utilizzando Vite, Vue, Vue Router, Bootstrap, Sass e Netlify CLI per la
+                gestione
+                delle chiamate API.</p>
+        </div>
     </div>
-    <div class="text-center text-azul px-4">
-        <h3 v-if="!store.user">Getting data from notion</h3>
-        <p>Il portfolio è interamente modificabile tramite una pagina di Notion. Utilizzando le API fornite da Notion
-        </p>
-        <p>Il sito è stato realizzato utilizzando Vite, Vue, Vue Router, Bootstrap, Sass e Netlify CLI per la gestione
-            delle chiamate API.</p>
-    </div>
+
 </template>
 
 <script>
 import { store } from '../store.js';
 export default {
-  data() {
-    return {
-      store,
-    }
-  },
+    data() {
+        return {
+            store,
+        }
+    },
 }
 </script>
 

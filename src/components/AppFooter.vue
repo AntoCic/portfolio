@@ -10,7 +10,7 @@
         </div>
         <div class="col-auto">
           <RouterLink to="/contact" class="h5"
-            :class="$route.fullPath !== '/contact' ? 'text-decoration-underline' : 'd-none'">Contatti</RouterLink>
+            :class="$route.fullPath !== '/contact' ? 'text-decoration-underline' : 'd-none'" @click="store.infoLoad = true">Contatti</RouterLink>
           <ul class="useful-links ps-0 mb-0 d-flex flex-row-reverse gap-2">
             <li>
               <a href="https://github.com/AntoCic" target="_blank">

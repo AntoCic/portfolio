@@ -11,7 +11,7 @@
          </div>
       </div>
       <div class="col-md-4">
-        <img :src="store.user.img" class="img-fluid rounded-start" alt="...">
+        <img src="/img/foto_profilo.png" class="img-fluid rounded-end" alt="foto profilo personale">
       </div>
     </div>
   </div>

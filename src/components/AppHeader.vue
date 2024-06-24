@@ -3,8 +3,8 @@
     <div class="container">
       <nav class="row align-items-center p-2 my-3">
         <div class="col amsterdam-four text-gold">
-          <RouterLink to="/" class="h3">
-            <img @click="store.infoLoad = true" src="../assets/img/logo.png" class="logo align-text-top"
+          <RouterLink to="/" @click="store.infoLoad = true" class="h3">
+            <img src="/img/logo.png" class="logo align-text-top"
               alt="Vue logo" />
             Antonino Cicala
           </RouterLink>
