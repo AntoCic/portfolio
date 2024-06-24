@@ -4,22 +4,33 @@
       <nav class="row align-items-center p-2 my-3">
         <div class="col amsterdam-four text-gold">
           <RouterLink to="/" class="h3">
-            <img src="../assets/img/logo.png" class="logo align-text-top" alt="Vue logo" />
+            <img @click="store.infoLoad = true" src="../assets/img/logo.png" class="logo align-text-top"
+              alt="Vue logo" />
             Antonino Cicala
           </RouterLink>
         </div>
         <div class="col-auto">
           <a href="/Antonino.Cicala.pdf" rel="download curriculum" download>
-           <img src="../assets/img/ico_dw_cv.svg" alt="">
+            <img src="../assets/img/ico_dw_cv.svg" alt="">
           </a>
         </div>
       </nav>
-      <div class="row"><hr></div>
+      <div class="row">
+        <hr>
+      </div>
     </div>
   </header>
 </template>
 
 <script>
+import { store } from '../store.js';
+export default {
+  data() {
+    return {
+      store,
+    }
+  },
+}
 </script>
 
 

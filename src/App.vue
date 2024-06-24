@@ -23,6 +23,7 @@ export default {
         this.store.user = res.data.user;
         this.store.experiences = res.data.experiences;
         this.store.visiblePj = res.data.visiblePj;
+        console.log('fetchNotion');
       }
       );
     },

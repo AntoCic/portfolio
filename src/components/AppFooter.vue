@@ -4,9 +4,9 @@
       <div class="row">
         <hr>
       </div>
-      <div class="row align-items-end text-azul">
+      <div class="row align-items-end text-azul mb-2">
         <div class="col">
-          <p class="mb-0">Made by Antonino Cicala</p>
+          <p class="mb-0"><span class="text-decoration-underline" @click="store.infoLoad = false">Info sito</span> - Made by Antonino Cicala</p>
         </div>
         <div class="col-auto">
           <RouterLink to="/contact" class="h5"
@@ -54,6 +54,14 @@
 </template>
 
 <script>
+import { store } from '../store.js';
+export default {
+  data() {
+    return {
+      store,
+    }
+  },
+}
 </script>
 
 

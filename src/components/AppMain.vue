@@ -1,11 +1,11 @@
 <template>
-     <main class="main">
-        <div v-if="store.user" class="container">
+    <main class="main">
+        <div v-if="store.user && store.infoLoad" class="container">
             <RouterView />
         </div>
         <CmpLoading v-else />
     </main>
-    
+
 </template>
 <script>
 import { store } from '../store.js';
@@ -22,6 +22,10 @@ export default {
     },
     mounted() {
         console.log('@@@@ Main @@@@');
+        setTimeout(()=> {
+            this.store.infoLoad = true;
+            console.log('jdfhjeashjd');
+        }, 3000);
     }
 }
 
