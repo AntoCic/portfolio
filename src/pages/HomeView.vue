@@ -63,8 +63,8 @@ export default {
 
   },
   mounted() {
-    console.log('@@@@ Home @@@@');
-    console.log(store);
+    // console.log('@@@@ Home @@@@');
+    // console.log(store);
   }
 }
 

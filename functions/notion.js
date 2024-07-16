@@ -145,9 +145,10 @@ async function getExperiences() {
         },
     });
 
-    let experiences = {};
+    let experiences = [];
     for (const page of res.results) {
-        experiences[page.id] = {
+        experiences.push({
+            id: page.id,
             name: page.properties["Name"].title[0].plain_text,
             description: page.properties.description.rich_text.length ? page.properties.description.rich_text[0].plain_text : null,
             rule: page.properties.rule.rich_text.length ? page.properties.rule.rich_text[0].plain_text : null,
@@ -155,8 +156,9 @@ async function getExperiences() {
             priority: page.properties.priority.number ? page.properties.priority.number : 0,
             dateStart: page.properties.date.date ? page.properties.date.date.start : null,
             dateEnd: page.properties.date.date ? page.properties.date.date.end : null,
-        }
+        });
     }
+    experiences.sort((a, b) => -(new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()));
     return experiences
 }
 async function getVisiblePj() {
@@ -171,7 +173,7 @@ async function getVisiblePj() {
         },
     });
 
-    let visiblePj = {};
+    let visiblePj = [];
     for (const page of res.results) {
         let technologies = [];
         if (page.properties.technologies.multi_select.length) {
@@ -179,7 +181,8 @@ async function getVisiblePj() {
                 technologies.push(tecnology.name)
             }
         }
-        visiblePj[page.id] = {
+        visiblePj.push({
+            id: page.id,
             name: page.properties["Name"].title[0].plain_text,
             img: page.properties.img.rich_text.length ? page.properties.img.rich_text[0].plain_text : null,
             site_link: page.properties.site_link.rich_text.length ? page.properties.site_link.rich_text[0].plain_text : null,
@@ -192,8 +195,9 @@ async function getVisiblePj() {
             dateStart: page.properties.date.date ? page.properties.date.date.start : null,
             dateEnd: page.properties.date.date ? page.properties.date.date.end : null,
             technologies
-        }
+        });
     }
+    visiblePj.sort((a, b) => -(new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()));
     return visiblePj;
 }
 

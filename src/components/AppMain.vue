@@ -21,11 +21,10 @@ export default {
 
     },
     mounted() {
-        console.log('@@@@ Main @@@@');
+        // console.log('@@@@ Main @@@@');
         setTimeout(()=> {
             this.store.infoLoad = true;
-            console.log('jdfhjeashjd');
-        }, 3000);
+        }, 2000);
     }
 }
 

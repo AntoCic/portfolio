@@ -23,13 +23,13 @@ export default {
         this.store.user = res.data.user;
         this.store.experiences = res.data.experiences;
         this.store.visiblePj = res.data.visiblePj;
-        console.log('fetchNotion');
+        console.log('Store : ', this.store);
       }
       );
     },
   },
   mounted() {
-    console.log('@@@@ App @@@@');
+    // console.log('@@@@ App @@@@');
     this.fetchNotion();
   }
 }
