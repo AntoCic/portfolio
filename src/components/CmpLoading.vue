@@ -1,5 +1,5 @@
 <template>
-    <div  @click="store.infoLoad = true">
+    <div @click="store.infoLoad = true" class="container position-relative">
         <div class="spinner-box my-5 mx-auto">
             <div class="spinner"></div>
             <img src="../assets/img/notion.svg" alt="">
@@ -12,6 +12,10 @@
             <p>Il sito è stato realizzato utilizzando Vite, Vue, Vue Router, Bootstrap, Sass e Netlify CLI per la
                 gestione
                 delle chiamate API.</p>
+        </div>
+
+        <div class="ms_btn-close" v-if="store.user">
+            x
         </div>
     </div>
 
@@ -59,11 +63,29 @@ export default {
     }
 }
 
-
-
 @keyframes rotation360 {
     to {
         transform: rotate(360deg);
+    }
+}
+
+.ms_btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 26px;
+    padding: 0.5px;
+    margin-right: 16px;
+    border: 2px solid #9D7B33;
+    border-radius: 50%;
+    color: #9D7B33;
+    line-height: 100%;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.6;
     }
 }
 </style>

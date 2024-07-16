@@ -2,8 +2,8 @@
   <div class="row text-azul">
 
     <div class="col-12 col-md-4 col-lg-3">
-      <h2>{{ store.user.name }}</h2>
-      <p class="small">{{ store.user.rule }}</p>
+      <!-- <h2>{{ store.user.name }}</h2> -->
+      <h3>{{ store.user.rule }}</h3>
       <p>{{ store.user.description }}</p>
       <hr>
       <div class="container">
@@ -12,7 +12,8 @@
             <h4>SKILLS</h4>
           </div>
           <div class="col-3 col-sm-4 col-md-12" v-for="technology in store.user.technologies">
-            <p class="text-center text-sm-start"><img :src="`/img/skills/${technology.toLowerCase()}.svg`" :alt="technology" class="me-1"> {{ technology
+            <p class="text-center text-sm-start"><img :src="`/img/skills/${technology.toLowerCase()}.svg`"
+                :alt="technology" class="me-1"> {{ technology
               }}</p>
           </div>
         </div>

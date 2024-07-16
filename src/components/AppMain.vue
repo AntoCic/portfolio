@@ -22,9 +22,9 @@ export default {
     },
     mounted() {
         // console.log('@@@@ Main @@@@');
-        setTimeout(()=> {
+        setTimeout(() => {
             this.store.infoLoad = true;
-        }, 2000);
+        }, 3000);
     }
 }
 
