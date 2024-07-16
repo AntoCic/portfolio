@@ -17,10 +17,8 @@
                 <a v-if="pj.site_link" :href="pj.site_link" target="_blank" class="ms_btn">
                     <img src="/img/site.png" alt="Site to try">
                 </a>
-                <a v-if="pj.git_link" :href="pj.git_link" target="_blank" class="btn btn-link">
-                    <a v-if="pj.site_link" :href="pj.site_link" target="_blank" class="ms_btn">
-                        <img src="/img/repo.png" alt="Github repo">
-                    </a>
+                <a v-if="pj.git_link" :href="pj.git_link" target="_blank" class="ms_btn">
+                    <img src="/img/repo.png" alt="Github repo">
                 </a>
             </div>
         </div>
@@ -65,15 +63,52 @@ export default {
         z-index: 1;
     }
 
+    &:hover .ms_btn:first-child {
+        animation: btn_shake_1 0.3s linear both;
+        animation-iteration-count: 2;
+    }
+
     .ms_btn {
         display: inline-block;
-
-        img {
-            margin-right: 8px;
-        }
+        width: 2em;
+        margin-right: 8px;
 
         &:hover {
+            opacity: 0.7;
             animation: btn_shake 0.3s linear infinite both;
+        }
+    }
+
+    @keyframes btn_shake_1 {
+            0% {
+                -webkit-transform: translate(0);
+                transform: translate(0);
+            }
+
+            20% {
+                -webkit-transform: translate(-1.5px, 1.5px);
+                transform: translate(-1.5px, 1.5px);
+            }
+
+            40% {
+                -webkit-transform: translate(-1.5px, -1.5px);
+                transform: translate(-1.5px, -1.5px);
+            }
+
+            60% {
+                -webkit-transform: translate(1.5px, 1.5px);
+                transform: translate(1.5px, 1.5px);
+            }
+
+            80% {
+                -webkit-transform: translate(1.5px, -1.5px);
+                transform: translate(1.5px, -1.5px);
+            }
+
+            100% {
+                -webkit-transform: translate(0);
+                transform: translate(0);
+            }
         }
 
         @keyframes btn_shake {
@@ -83,23 +118,23 @@ export default {
             }
 
             20% {
-                -webkit-transform: translate(-2px, 2px);
-                transform: translate(-2px, 2px);
+                -webkit-transform: translate(-1px, 1px);
+                transform: translate(-1px, 1px);
             }
 
             40% {
-                -webkit-transform: translate(-2px, -2px);
-                transform: translate(-2px, -2px);
+                -webkit-transform: translate(-1px, -1px);
+                transform: translate(-1px, -1px);
             }
 
             60% {
-                -webkit-transform: translate(2px, 2px);
-                transform: translate(2px, 2px);
+                -webkit-transform: translate(1px, 1px);
+                transform: translate(1px, 1px);
             }
 
             80% {
-                -webkit-transform: translate(2px, -2px);
-                transform: translate(2px, -2px);
+                -webkit-transform: translate(1px, -1px);
+                transform: translate(1px, -1px);
             }
 
             100% {
@@ -107,6 +142,5 @@ export default {
                 transform: translate(0);
             }
         }
-    }
 }
 </style>
