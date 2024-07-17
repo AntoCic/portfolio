@@ -64,7 +64,7 @@ export default {
     }
 
     &:hover .ms_btn:first-child {
-        animation: btn_shake_1 0.3s linear both;
+        animation: btn_shake 0.3s linear both;
         animation-iteration-count: 2;
     }
 
@@ -75,72 +75,40 @@ export default {
 
         &:hover {
             opacity: 0.7;
-            animation: btn_shake 0.3s linear infinite both;
         }
     }
 
-    @keyframes btn_shake_1 {
-            0% {
-                -webkit-transform: translate(0);
-                transform: translate(0);
-            }
-
-            20% {
-                -webkit-transform: translate(-1.5px, 1.5px);
-                transform: translate(-1.5px, 1.5px);
-            }
-
-            40% {
-                -webkit-transform: translate(-1.5px, -1.5px);
-                transform: translate(-1.5px, -1.5px);
-            }
-
-            60% {
-                -webkit-transform: translate(1.5px, 1.5px);
-                transform: translate(1.5px, 1.5px);
-            }
-
-            80% {
-                -webkit-transform: translate(1.5px, -1.5px);
-                transform: translate(1.5px, -1.5px);
-            }
-
-            100% {
-                -webkit-transform: translate(0);
-                transform: translate(0);
-            }
+    @keyframes btn_shake {
+        0% {
+            -webkit-transform: translate(0);
+            transform: translate(0);
         }
 
-        @keyframes btn_shake {
-            0% {
-                -webkit-transform: translate(0);
-                transform: translate(0);
-            }
-
-            20% {
-                -webkit-transform: translate(-1px, 1px);
-                transform: translate(-1px, 1px);
-            }
-
-            40% {
-                -webkit-transform: translate(-1px, -1px);
-                transform: translate(-1px, -1px);
-            }
-
-            60% {
-                -webkit-transform: translate(1px, 1px);
-                transform: translate(1px, 1px);
-            }
-
-            80% {
-                -webkit-transform: translate(1px, -1px);
-                transform: translate(1px, -1px);
-            }
-
-            100% {
-                -webkit-transform: translate(0);
-                transform: translate(0);
-            }
+        20% {
+            -webkit-transform: translate(-1.5px, 1.5px);
+            transform: translate(-1.5px, 1.5px);
         }
+
+        40% {
+            -webkit-transform: translate(-1.5px, -1.5px);
+            transform: translate(-1.5px, -1.5px);
+        }
+
+        60% {
+            -webkit-transform: translate(1.5px, 1.5px);
+            transform: translate(1.5px, 1.5px);
+        }
+
+        80% {
+            -webkit-transform: translate(1.5px, -1.5px);
+            transform: translate(1.5px, -1.5px);
+        }
+
+        100% {
+            -webkit-transform: translate(0);
+            transform: translate(0);
+        }
+    }
+
 }
 </style>
