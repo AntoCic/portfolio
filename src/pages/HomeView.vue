@@ -28,7 +28,7 @@
       <h3 class="text-end">Project</h3>
       <hr class="mt-0">
 
-      <CmpPjCard v-for="(pj, key) in store.visiblePj" :key="key" :pj="pj" />
+      <CmpPjCard v-for="(pj, key) in store.visiblePj" :key="key + 'pj'" :pj="pj" :i="key" />
 
     </div>
 

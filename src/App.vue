@@ -1,7 +1,7 @@
 <template>
-  <AppHeader />
+  <AppHeader v-if="!store.isTeam(this.$route.fullPath)" />
   <AppMain />
-  <AppFooter />
+  <AppFooter v-if="!store.isTeam(this.$route.fullPath)" />
 </template>
 
 <script>

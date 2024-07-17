@@ -185,6 +185,7 @@ async function getVisiblePj() {
             id: page.id,
             name: page.properties["Name"].title[0].plain_text,
             img: page.properties.img.rich_text.length ? page.properties.img.rich_text[0].plain_text : null,
+            video: page.properties.video.rich_text.length ? page.properties.video.rich_text[0].plain_text : null,
             site_link: page.properties.site_link.rich_text.length ? page.properties.site_link.rich_text[0].plain_text : null,
             git_link: page.properties.git_link.rich_text.length ? page.properties.git_link.rich_text[0].plain_text : null,
             description: page.properties.description.rich_text.length ? page.properties.description.rich_text[0].plain_text : null,
