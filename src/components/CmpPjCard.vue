@@ -20,9 +20,6 @@
                 <RouterLink v-if="pj.video" :to="{ name: 'pj.show', params: { id: pj.id } }" class="ms_btn">
                     <img src="/img/video.png" alt="video preview">
                 </RouterLink>
-                <!-- <a v-if="pj.video" :href="pj.video" target="_blank" class="ms_btn">
-                    <img src="/img/video.png" alt="video preview">
-                </a> -->
                 <a v-if="pj.git_link" :href="pj.git_link" target="_blank" class="ms_btn">
                     <img src="/img/repo.png" alt="Github repo">
                 </a>

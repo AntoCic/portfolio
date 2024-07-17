@@ -9,7 +9,6 @@ export default createRouter({
   routes: [
     { path: '/', component: HomeView },
     { path: '/contact', component: ContactView },
-    { path: '/pj/:id', name: 'pj.show', component: PjShow },
-    { path: '/pj/team/:id', name: 'pj.team', component: PjShow },
+    { path: '/pj/:id', name: 'pj.show', component: PjShow, props: true },
   ],
 })
