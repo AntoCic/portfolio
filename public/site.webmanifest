@@ -1,0 +1,13 @@
+{
+    "short_name": "Portfolio",
+    "name": "Portfolio",
+    "icons": [
+        {
+            "src": "/img/logo.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ],
+    "theme_color": "#1C405D",
+    "display": "fullscreen"
+}
