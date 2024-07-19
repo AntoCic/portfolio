@@ -42,10 +42,6 @@ export default {
         pj: {
             type: Object,
             required: true
-        },
-        i: {
-            type: Number,
-            required: true
         }
     },
     data() {

@@ -26,29 +26,19 @@
       <template v-if="store.hiddenPj">
         <h3 class="text-end">Project hidden</h3>
         <hr class="mt-0">
-        <CmpPjCard v-for="(pj, key) in store.hiddenPj" :key="key + 'pjH'" :pj="pj" :i="key" />
-        <hr>
+        <CmpPjCard v-for="(pj, key) in store.hiddenPj" :key="key + 'pjH'" :pj="pj" />
       </template>
 
       <h3 class="text-end">Project</h3>
       <hr class="mt-0">
-      <CmpPjCard v-for="(pj, key) in store.visiblePj" :key="key + 'pjV'" :pj="pj" :i="key" />
+      <CmpPjCard v-for="(pj, key) in store.visiblePj" :key="key + 'pjV'" :pj="pj" />
 
     </div>
 
     <div class="col-12 text-azul">
       <hr>
       <h2>Experience</h2>
-      <div v-for="(experience, key) in store.experiences" :key="key"
-        class="card text-azul bg-light bg-opacity-10 border-0 rounded mb-2">
-        <div class="card-body">
-          <h5 class="card-title">{{ experience.name }}</h5>
-          <p class="card-text small">{{ experience.rule }}</p>
-          <p class="card-text">{{ experience.description }}</p>
-          <p>Data: {{ experience.dateStart }} - {{ experience.dateEnd }}</p>
-          <p>Location: {{ experience.location }}</p>
-        </div>
-      </div>
+      <CmpExperiance v-for="(experience, key) in store.experiences" :key="key + 'exp'" :exp="experience" />
     </div>
 
   </div>
@@ -57,8 +47,9 @@
 <script>
 import { store } from '../store.js';
 import CmpPjCard from '../components/CmpPjCard.vue';
+import CmpExperiance from '../components/CmpExperiance.vue';
 export default {
-  components: { CmpPjCard },
+  components: { CmpPjCard, CmpExperiance },
   data() {
     return {
       store,
