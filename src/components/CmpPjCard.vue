@@ -2,7 +2,7 @@
     <div class="ms_card">
 
         <img :src="pj.img" class="logo-pj" alt="logo-project">
-        <div class="overlai"></div>
+        <div class="overlay"></div>
         <div class="ms_content p-3">
             <h5 class="card-title">{{ pj.name }}</h5>
             <p class="card-text small">{{ pj.rule }}</p>
@@ -11,7 +11,14 @@
                     :alt="technology" width="25" class="me-1">
 
             </div>
-            <p class="card-text">{{ pj.description }}</p>
+
+            <p v-if="descriptionBtn" class="card-text">{{ pj.shortDescription }}<span
+                    class="ms_btn-description text-gold" v-if="descriptionBtn"
+                    @click="descriptionBtn = !descriptionBtn">...</span> </p>
+            <p v-else class="card-text">{{ pj.description }} <span class="ms_btn-description text-gold"
+                    v-if="descriptionBtn === false" @click="descriptionBtn = !descriptionBtn">&blacktriangle;</span>
+            </p>
+
             <p>Data: {{ pj.dateStart }} <template v-if="pj.dateEnd">- {{ pj.dateEnd }}</template> </p>
             <div class="mt-auto">
                 <a v-if="pj.site_link" :href="pj.site_link" target="_blank" class="ms_btn">
@@ -41,11 +48,30 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            descriptionBtn: null,
+        }
+    },
+    methods: {
+
+    },
+    mounted() {
+        if (this.pj.description.length > 240) {
+            this.descriptionBtn = true;
+            this.pj.shortDescription = this.pj.description.slice(0, 225);
+        }
+    }
 }
 </script>
 
 
 <style lang="scss" scoped>
+.ms_btn-description {
+    cursor: pointer;
+    user-select: none;
+}
+
 .ms_card {
     position: relative;
     width: 100%;
@@ -57,7 +83,7 @@ export default {
         object-position: left;
     }
 
-    .overlai {
+    .overlay {
         position: absolute;
         width: 100%;
         height: 100%;
