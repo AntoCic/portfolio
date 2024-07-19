@@ -7,7 +7,7 @@ const notion = new Client({ auth: NOTION_KEY });
 
 PersonalName = 'Antonino Cicala';
 
-let password = '';
+let isLogged = false;
 
 exports.handler = async function (event, context) {
     try {
@@ -23,7 +23,7 @@ exports.handler = async function (event, context) {
                 };
                 break;
             case 'POST':
-                if (isAuthorized()) {
+                if (isLogged) {
                     switch (getParameter(event)) {
                         case 'db-structure':
                             res = await notion.databases.retrieve({ database_id: NOTION_DB });
@@ -41,11 +41,24 @@ exports.handler = async function (event, context) {
                         case 'hidden-pj':
                             response = await getHiddenPj();
                             break;
+
+                        case 'logout':
+                            isLogged = false;
+                            response = { logged: isLogged };
+                            break;
                         default:
                             return returnError(400, 'Bad request.');
                     }
                 } else {
-                    return returnError(401, 'Unauthorized');
+                    switch (getParameter(event)) {
+                        case 'login':
+                            const password = JSON.parse(event.body).userKey;
+                            isLogged = USER_KEY === password ? true : false;
+                            response = isLogged ? { logged: isLogged } : { msg: "Nice try. It's not so easy" };
+                            break;
+                        default:
+                            return returnError(401, 'Unauthorized');
+                    }
                 }
                 break;
 
@@ -53,6 +66,7 @@ exports.handler = async function (event, context) {
                 return returnError(405, 'Invalid request type.');
         }
 
+        // console.log(response);
         //  send response 
         return {
             statusCode: 200,
@@ -64,10 +78,6 @@ exports.handler = async function (event, context) {
         return returnError(500, e.toString().substr(16));
     }
 };
-
-function isAuthorized() {
-    return USER_KEY === password ? true : false
-}
 
 function returnError(statusCode, error) {
     return {
@@ -120,6 +130,7 @@ async function getUser() {
     }
     const user = {
         name: PersonalName,
+        isLogged,
         img: res.results[0].properties.img.rich_text.length ? res.results[0].properties.img.rich_text[0].plain_text : null,
         email: utility.email,
         phone: utility.phone,
@@ -183,6 +194,7 @@ async function getVisiblePj() {
         }
         visiblePj.push({
             id: page.id,
+            visible: true,
             name: page.properties["Name"].title[0].plain_text,
             img: page.properties.img.rich_text.length ? page.properties.img.rich_text[0].plain_text : null,
             video: page.properties.video.rich_text.length ? page.properties.video.rich_text[0].plain_text : null,
@@ -203,6 +215,7 @@ async function getVisiblePj() {
 }
 
 async function getHiddenPj() {
+
     res = await notion.databases.query({
         database_id: NOTION_DB,
         filter: {
@@ -214,7 +227,7 @@ async function getHiddenPj() {
         },
     });
 
-    let hiddenPj = {};
+    let hiddenPj = [];
     for (const page of res.results) {
         let technologies = [];
         if (page.properties.technologies.multi_select.length) {
@@ -222,9 +235,12 @@ async function getHiddenPj() {
                 technologies.push(tecnology.name)
             }
         }
-        hiddenPj[page.id] = {
+        hiddenPj.push({
+            id: page.id,
+            visible: false,
             name: page.properties["Name"].title[0].plain_text,
             img: page.properties.img.rich_text.length ? page.properties.img.rich_text[0].plain_text : null,
+            video: page.properties.video.rich_text.length ? page.properties.video.rich_text[0].plain_text : null,
             site_link: page.properties.site_link.rich_text.length ? page.properties.site_link.rich_text[0].plain_text : null,
             git_link: page.properties.git_link.rich_text.length ? page.properties.git_link.rich_text[0].plain_text : null,
             description: page.properties.description.rich_text.length ? page.properties.description.rich_text[0].plain_text : null,
@@ -235,7 +251,8 @@ async function getHiddenPj() {
             dateStart: page.properties.date.date ? page.properties.date.date.start : null,
             dateEnd: page.properties.date.date ? page.properties.date.date.end : null,
             technologies
-        }
+        });
     }
+    hiddenPj.sort((a, b) => -(new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime()));
     return hiddenPj;
 }

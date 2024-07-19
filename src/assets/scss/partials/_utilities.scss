@@ -1,8 +1,9 @@
 @use './variables' as *;
 
-.text-azul{
-    color: #EDF6FE;
+.text-azul {
+    color: $azul;
 }
-.text-gold{
-    color: #9D7B33;
+
+.text-gold {
+    color: $gold;
 }

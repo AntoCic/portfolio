@@ -5,11 +5,12 @@ body {
 }
 
 #app {
-  background-color: #1C405D;
+  background-color: $bg-color;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
-main{
+
+main {
   flex-grow: 1;
 }
