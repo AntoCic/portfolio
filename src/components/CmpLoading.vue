@@ -5,7 +5,7 @@
             <img src="../assets/img/notion.svg" alt="">
         </div>
         <div class="text-center text-azul px-4">
-            <h3 v-if="!store.user">Getting data from notion</h3>
+            <h3 v-if="store.user.isLogged === null">Getting data from notion</h3>
             <p>Il portfolio è interamente modificabile tramite una pagina di Notion. Utilizzando le API fornite da
                 Notion
             </p>
@@ -14,7 +14,7 @@
                 delle chiamate API.</p>
         </div>
 
-        <div class="ms_btn-close" v-if="store.user">
+        <div class="ms_btn-close" v-if="store.user.isLogged !== null">
             x
         </div>
     </div>

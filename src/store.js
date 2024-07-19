@@ -22,7 +22,9 @@ export const store = reactive({
             axios.post('/api/notion/logout').then((res) => {
                 store.onLogout();
             }
-            );
+            ).catch((err) => {
+                location.reload();
+            });
         },
     },
 
@@ -38,7 +40,9 @@ export const store = reactive({
             console.log('experiences : ', store.experiences);
             console.log('visiblePj : ', store.visiblePj);
         }
-        );
+        ).catch((err) => {
+            location.reload();
+        });
     },
     onLogin() {
         store.user.isLogged = true;
