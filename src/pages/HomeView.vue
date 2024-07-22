@@ -14,7 +14,7 @@
           </div>
           <div class="col-3 col-sm-4 col-md-12" v-for="technology in store.user.technologies">
             <p class="text-center text-sm-start"><img :src="`/img/skills/${technology.toLowerCase()}.svg`"
-                :alt="technology" class="me-1"> {{ technology
+                :alt="technology" class="skills-img me-1"> {{ technology
               }}</p>
           </div>
         </div>
@@ -87,5 +87,9 @@ export default {
   background: $bg-color;
   border: 1px solid $gold;
   border-radius: 3px;
+}
+
+.skills-img {
+  width: 40px;
 }
 </style>
