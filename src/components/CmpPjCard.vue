@@ -1,7 +1,7 @@
 <template>
     <div class="ms_card">
 
-        <img :src="pj.img" class="logo-pj" alt="logo-project">
+        <img :src="pj.img ? pj.img : logo404" class="logo-pj" alt="logo-project">
         <div class="overlay"></div>
         <div class="ms_content p-3">
             <h5 class="card-title">{{ pj.name }}</h5>
@@ -46,6 +46,7 @@ export default {
     },
     data() {
         return {
+            logo404: '/img/logo404.png',
             descriptionBtn: null,
         }
     },
