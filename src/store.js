@@ -9,7 +9,7 @@ export const store = reactive({
         isLogged: null,
 
         login(userKey) {
-            axios.post('/api/notion/login', { userKey }).then((res) => {
+            axios.post('/api/login', { userKey }).then((res) => {
                 if (res.data.logged) {
                     store.onLogin();
                 } else {
@@ -19,7 +19,7 @@ export const store = reactive({
             );
         },
         logout() {
-            axios.post('/api/notion/logout').then((res) => {
+            axios.post('/api/logout').then((res) => {
                 store.onLogout();
             }
             ).catch((err) => {
@@ -29,16 +29,15 @@ export const store = reactive({
     },
 
     start() {
-        axios.get('/api/notion').then((res) => {
+        axios.get('/api').then((res) => {
             store.user = { ...store.user, ...res.data.user };
             store.experiences = res.data.experiences;
             store.visiblePj = res.data.visiblePj;
+            store.template = res.data.template;
 
             if (store.user.isLogged) store.onLogin();
 
-            console.log('user : ', store.user);
-            console.log('experiences : ', store.experiences);
-            console.log('visiblePj : ', store.visiblePj);
+            console.log('cancellare : ', res.data);
         }
         ).catch((err) => {
             location.reload();
@@ -54,7 +53,7 @@ export const store = reactive({
     },
 
     getPjHidden() {
-        axios.post('/api/notion/hidden-pj').then((res) => {
+        axios.post('/api/hidden-pj').then((res) => {
             store.hiddenPj = res.data;
             console.log('hiddenPj : ', store.hiddenPj);
         }

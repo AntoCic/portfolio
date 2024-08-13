@@ -1,6 +1,5 @@
 <template>
-  <div class="row text-azul">
-
+  <div class="row">
     <div class="col-12 col-md-4 col-lg-3">
       <h3>{{ store.user.rule }}</h3>
       <p>{{ store.user.description }}</p>
@@ -34,13 +33,22 @@
       <CmpPjCard v-for="(pj, key) in store.visiblePj" :key="key + 'pjV'" :pj="pj" />
 
     </div>
-
-    <div class="col-12 text-azul">
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <hr>
+      <h2>Project Template</h2>
+    </div>
+    <div class="col-6 col-md-4 col-lg-3 p-2" v-for="(pj, key) in store.template" :key="key + 'pjT'">
+      <CmpPjTemplate :pj="pj" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
       <hr>
       <h2>Experience</h2>
       <CmpExperiance v-for="(experience, key) in store.experiences" :key="key + 'exp'" :exp="experience" />
     </div>
-
   </div>
 </template>
 
@@ -48,8 +56,9 @@
 import { store } from '../store.js';
 import CmpPjCard from '../components/CmpPjCard.vue';
 import CmpExperiance from '../components/CmpExperiance.vue';
+import CmpPjTemplate from '../components/CmpPjTemplate.vue';
 export default {
-  components: { CmpPjCard, CmpExperiance },
+  components: { CmpPjCard, CmpExperiance, CmpPjTemplate },
   data() {
     return {
       store,

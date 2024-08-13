@@ -1,6 +1,6 @@
 <template>
     <main class="main">
-        <div v-if="store.user.isLogged !== null && store.infoLoad" class="container">
+        <div v-if="store.user.isLogged !== null && store.infoLoad" class="container text-azul">
             <RouterView />
         </div>
         <CmpLoading v-else />
