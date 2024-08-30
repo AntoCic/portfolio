@@ -3,13 +3,12 @@
 
         <img :src="pj.img ? pj.img : logo404" class="logo-pj" alt="logo-project">
         <div class="overlay"></div>
-        <div class="ms_content p-3">
+        <div class="ms_content px-3">
             <h5 class="card-title">{{ pj.name }}</h5>
             <p class="card-text small">{{ pj.rule }}</p>
             <div class="mb-2">
                 <img v-for="technology in pj.technologies" :src="`/img/skills/${technology.toLowerCase()}.svg`"
                     :alt="technology" width="25" class="me-1">
-
             </div>
 
             <p v-if="descriptionBtn" class="card-text">{{ pj.shortDescription }}<span
@@ -73,9 +72,13 @@ export default {
     position: relative;
     width: 100%;
     display: flex;
+    min-height: 500px;
+    align-items: center;
 
     .logo-pj {
         width: 40%;
+        min-height: 400px;
+
         object-fit: cover;
         object-position: left;
     }

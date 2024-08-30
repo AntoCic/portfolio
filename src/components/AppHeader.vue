@@ -19,9 +19,6 @@
           </button>
         </div>
       </nav>
-      <div class="row">
-        <hr>
-      </div>
     </div>
   </header>
 </template>
