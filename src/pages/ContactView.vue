@@ -81,6 +81,9 @@ export default {
     handleActive(contentTipe, content, href) {
       this.infoContent = { contentTipe, href, content }
     },
+  },
+  mounted(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
