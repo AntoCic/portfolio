@@ -24,7 +24,7 @@ export default {
         // console.log('@@@@ Main @@@@');
         setTimeout(() => {
             this.store.infoLoad = true;
-        }, 1000);
+        }, 2000);
     }
 }
 

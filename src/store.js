@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import data_test from './data_test';
+// import data_test from './data_test';
 
 import axios from 'axios'
 export const store = reactive({
@@ -30,24 +30,24 @@ export const store = reactive({
     },
 
     start() {
-        store.user = { ...store.user, ...data_test.user };
-        store.experiences = data_test.experiences;
-        store.visiblePj = data_test.visiblePj;
-        store.template = data_test.template;
+        // store.user = { ...store.user, ...data_test.user };
+        // store.experiences = data_test.experiences;
+        // store.visiblePj = data_test.visiblePj;
+        // store.template = data_test.template;
         
-        // axios.get('/api').then((res) => {
-        //     store.user = { ...store.user, ...res.data.user };
-        //     store.experiences = res.data.experiences;
-        //     store.visiblePj = res.data.visiblePj;
-        //     store.template = res.data.template;
+        axios.get('/api').then((res) => {
+            store.user = { ...store.user, ...res.data.user };
+            store.experiences = res.data.experiences;
+            store.visiblePj = res.data.visiblePj;
+            store.template = res.data.template;
 
-        //     if (store.user.isLogged) store.onLogin();
+            if (store.user.isLogged) store.onLogin();
 
-        //     console.log('cancellare : ', res.data);
-        // }
-        // ).catch((err) => {
-        //     location.reload();
-        // });
+            // console.log('cancellare : ', res.data);
+        }
+        ).catch((err) => {
+            location.reload();
+        });
     },
 
     onLogin() {
