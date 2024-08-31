@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import data_test from './data_test';
 
 import axios from 'axios'
 export const store = reactive({
@@ -13,7 +14,7 @@ export const store = reactive({
                 if (res.data.logged) {
                     store.onLogin();
                 } else {
-                    console.log(res.data);
+                    console.log({ test: { ...res.data } });
                 }
             }
             );
@@ -29,20 +30,26 @@ export const store = reactive({
     },
 
     start() {
-        axios.get('/api').then((res) => {
-            store.user = { ...store.user, ...res.data.user };
-            store.experiences = res.data.experiences;
-            store.visiblePj = res.data.visiblePj;
-            store.template = res.data.template;
+        store.user = { ...store.user, ...data_test.user };
+        store.experiences = data_test.experiences;
+        store.visiblePj = data_test.visiblePj;
+        store.template = data_test.template;
+        
+        // axios.get('/api').then((res) => {
+        //     store.user = { ...store.user, ...res.data.user };
+        //     store.experiences = res.data.experiences;
+        //     store.visiblePj = res.data.visiblePj;
+        //     store.template = res.data.template;
 
-            if (store.user.isLogged) store.onLogin();
+        //     if (store.user.isLogged) store.onLogin();
 
-            // console.log('cancellare : ', res.data);
-        }
-        ).catch((err) => {
-            location.reload();
-        });
+        //     console.log('cancellare : ', res.data);
+        // }
+        // ).catch((err) => {
+        //     location.reload();
+        // });
     },
+
     onLogin() {
         store.user.isLogged = true;
         store.getPjHidden();

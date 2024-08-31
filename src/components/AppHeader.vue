@@ -40,6 +40,10 @@ export default {
 
 
 <style lang="scss" scoped>
+header{
+  position: relative;
+  z-index: 2;
+}
 .logo {
   width: 70px;
   will-change: filter;

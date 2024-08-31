@@ -9,7 +9,7 @@
 
           <div class="main-contnet p-4">
             <div class="p-4 pb-2">
-              <img src="/img/profilo_no_bg.png" class="img-fluid rounded object-fit-cover" alt="foto profilo personale">
+              <img src="/img/foto_profilo_no_bg.png" class="img-fluid rounded object-fit-cover" alt="foto profilo personale">
             </div>
             <h3>{{ store.user.name }}</h3>
 
@@ -86,7 +86,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use '../assets/scss/partials/_variables.scss' as *;
 
 .wave-card {
