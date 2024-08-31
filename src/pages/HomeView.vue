@@ -39,12 +39,16 @@
         <hr class="mt-0">
         <h3 class="">Main</h3>
       </div>
+    </div>
+    <div class="row">
       <template v-for="(pj, key) in store.visiblePj" :key="key + 'pjV'">
-        <div v-if="pj.priority === 1" :class="['col-6 col-md-4 col-lg-3 p-2', key >= 4 ? 'd-md-none d-lg-block' : '']">
+        <div v-if="pj.priority <= 2"
+          :class="['col-6 col-md-4 col-lg-3 p-2', key === 2 ? 'd-none d-md-block' : '', key >= 4 ? 'd-none d-lg-block' : '', pj.priority === 2 ? 'order-2' : 'order-1']">
           <CmpPjTemplate :pj="pj" />
         </div>
       </template>
-
+    </div>
+    <div class="row">
       <template v-if="store.hiddenPj">
         <div class="col-12 mt-3">
           <h3 class="text-end">Hidden</h3>
