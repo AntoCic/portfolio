@@ -13,14 +13,17 @@
     </div>
   </div>
   <div class="container py-4">
-    <div class="row">
-      <template v-for="(technology, index) in store.user.technologies">
-        <div v-if="true" class="text-center col">
-          <img :src="`/img/skills/${technology.toLowerCase()}.svg`" :alt="technology" class="skills-img me-1">
-          <p>{{ technology }}</p>
+    <!-- ['d-inline-block', key % 2 === 0 ? 'animate-skill-down' : 'animate-skill-up'] -->
+    <div ref="skillContainer" class="w-100 text-center">
+      <template v-for="(key, index) in sequenceToShow">
+        <div v-if="index < quantityRowSkill"
+          :class="['d-inline-block', sequenceAnimation[index] ? 'animate-skill-down' : 'animate-skill-up']"
+          style="width: 100px;">
+          <img :src="`/img/skills/${store.user.technologies[key].toLowerCase()}.svg`"
+            :alt="store.user.technologies[key]" class="skills-img me-1">
+          <span>{{ store.user.technologies[key] }}</span>
         </div>
       </template>
-
     </div>
   </div>
 
@@ -91,6 +94,14 @@
     </div>
   </div>
 
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-auto p-2" v-for="(technology, index) in store.user.technologies">
+        <img :src="`/img/skills/${technology.toLowerCase()}.svg`" :alt="technology" class="" width="30">
+      </div>
+    </div>
+  </div>
+
   <div class="bg-light bg-opacity-25">
     <div class="container py-4">
       <div class="row">
@@ -126,7 +137,14 @@ export default {
     return {
       store,
       modalPass: false,
-      userKey: ''
+      userKey: '',
+      sequenceRandomSkill: [],
+      sequenceToShow: [],
+      sequenceAnimation: [],
+      quantityRowSkill: 0,
+      counterIntervall: 1,
+      currentIndex: 0,
+      firstRound: true,
     }
   },
   methods: {
@@ -137,9 +155,67 @@ export default {
       } else {
         this.modalPass = !this.modalPass;
       }
+    },
+    createSequenceRandomSkill() {
+      for (let i = 0; i < this.store.user.technologies.length; i++) {
+        let j;
+        do {
+          j = Math.floor(Math.random() * (this.store.user.technologies.length));
+        } while (this.sequenceRandomSkill.includes(j));
+        this.sequenceRandomSkill.push(j)
+      }
     }
   },
   mounted() {
+    this.quantityRowSkill = Math.floor(Number(this.$refs.skillContainer.offsetWidth) / 100);
+    if (this.quantityRowSkill > 8) {
+      this.quantityRowSkill = 7
+    }
+    this.createSequenceRandomSkill();
+    console.log(this.sequenceRandomSkill);
+
+    setInterval(() => {
+      const containerWidth = Number(this.$refs.skillContainer.offsetWidth);
+
+      this.quantityRowSkill = Math.floor(containerWidth / 100);
+      if (this.quantityRowSkill > 8) {
+        this.quantityRowSkill = 7
+      }
+
+      const targetIndex = this.counterIntervall + this.currentIndex;
+
+      if (targetIndex <= this.quantityRowSkill + this.currentIndex) {
+        let skillToAdd;
+        if (targetIndex > this.sequenceRandomSkill.length) {
+          skillToAdd = this.sequenceRandomSkill[this.counterIntervall - 1]
+          this.currentIndex = 0
+        } else {
+          skillToAdd = this.sequenceRandomSkill[targetIndex - 1];
+        }
+
+
+        if (this.firstRound === true) {
+          this.sequenceToShow.push(skillToAdd);
+          if (this.sequenceAnimation.length === 0) {
+            this.sequenceAnimation.push(true);
+          } else {
+            this.sequenceAnimation.push(!this.sequenceAnimation[this.sequenceAnimation.length - 1]);
+          }
+        } else {
+          this.sequenceToShow.splice(this.counterIntervall - 1, 1, skillToAdd);
+          this.sequenceAnimation[this.counterIntervall - 1] = !this.sequenceAnimation[this.counterIntervall - 1]
+
+        }
+      } else if (targetIndex === this.quantityRowSkill + this.currentIndex + 1) {
+        this.currentIndex = targetIndex - 1;
+        this.firstRound = false
+      }
+
+      this.counterIntervall = (this.counterIntervall % 8) + 1;
+
+    }, 500);
+
+
     this.$refs.caroselAutoplay.click();
   }
 }
@@ -163,6 +239,80 @@ export default {
 }
 
 .skills-img {
-  width: 40px;
+  width: 80px;
+}
+
+.animate-skill-down {
+  animation: skill_to_down 4s ease-in-out both;
+  animation-iteration-count: 1;
+}
+
+@keyframes skill_to_down {
+  0% {
+    opacity: 0;
+    transform: translate(0px, -100%);
+  }
+
+  10% {
+    opacity: 0.5;
+    transform: translate(0);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translate(0);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translate(0);
+  }
+
+  90% {
+    opacity: 0.5;
+    transform: translate(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, 100%);
+  }
+}
+
+.animate-skill-up {
+  animation: skill_to_up 4s ease-in-out both;
+  animation-iteration-count: 1;
+}
+
+@keyframes skill_to_up {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 100%);
+  }
+
+  10% {
+    opacity: 0.5;
+    transform: translate(0);
+  }
+
+  20% {
+    opacity: 1;
+    transform: translate(0);
+  }
+
+  80% {
+    opacity: 1;
+    transform: translate(0);
+  }
+
+  90% {
+    opacity: 0.5;
+    transform: translate(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, -100%);
+  }
 }
 </style>
