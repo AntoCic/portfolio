@@ -66,7 +66,7 @@
       </div>
 
       <div class="col-12">
-        <div id="caroselAutoplay" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+        <div id="caroselAutoplay" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2500">
           <div class="carousel-indicators">
             <button v-for="(pj, key) in store.visiblePj" :key="key + 'pjAllBtn'" type="button"
               data-bs-target="#caroselAutoplay" :data-bs-slide-to="key" :aria-current="{ true: key === 0 }"

@@ -67,6 +67,53 @@ export default {
 .card {
     height: 100%;
     background-color: transparent;
+
+    &:hover .ms_btn:first-child {
+        animation: btn_shake 0.3s linear both;
+        animation-iteration-count: 2;
+    }
+
+    .ms_btn {
+        display: inline-block;
+        width: 1.7em;
+        margin-right: 12px;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    @keyframes btn_shake {
+        0% {
+            -webkit-transform: translate(0);
+            transform: translate(0);
+        }
+
+        20% {
+            -webkit-transform: translate(-1.5px, 1.5px);
+            transform: translate(-1.5px, 1.5px);
+        }
+
+        40% {
+            -webkit-transform: translate(-1.5px, -1.5px);
+            transform: translate(-1.5px, -1.5px);
+        }
+
+        60% {
+            -webkit-transform: translate(1.5px, 1.5px);
+            transform: translate(1.5px, 1.5px);
+        }
+
+        80% {
+            -webkit-transform: translate(1.5px, -1.5px);
+            transform: translate(1.5px, -1.5px);
+        }
+
+        100% {
+            -webkit-transform: translate(0);
+            transform: translate(0);
+        }
+    }
 }
 
 .card-body {
@@ -80,15 +127,5 @@ export default {
 .ms_btn-description {
     cursor: pointer;
     user-select: none;
-}
-
-.ms_btn {
-    display: inline-block;
-    width: 1.7em;
-    margin-right: 12px;
-
-    &:hover {
-        opacity: 0.7;
-    }
 }
 </style>

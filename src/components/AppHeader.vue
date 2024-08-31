@@ -9,8 +9,10 @@
           </RouterLink>
         </div>
         <div class="col-auto">
-          <a href="/Antonino.Cicala.pdf" rel="download curriculum" download>
-            <img src="../assets/img/ico_dw_cv.svg" alt="">
+          <a href="/Antonino.Cicala.pdf" class="d-inline-block text-center text-azul lh-1" rel="download curriculum" download>
+            <img src="../assets/img/ico_dw_cv.svg"  alt="">
+            <br>
+           <small>Download CV</small> 
           </a>
           <button @click="store.user.logout" v-if="store.user.isLogged" class="btn btn-outline-danger px-1 me-1">
             <span class="material-symbols-rounded">
