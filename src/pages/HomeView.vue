@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-light bg-opacity-25">
+  <div class="bg-light bg-opacity-25 shadow">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-12 col-md-8">
@@ -12,7 +12,8 @@
       </div>
     </div>
   </div>
-  <div class="container pt-4 pb-2" >
+
+  <div class="container pt-4 pb-2 overflow-hidden" >
     <div ref="skillContainer" class="w-100 text-center" style="min-height: 104px;">
       <template v-for="(key, index) in skillsToShow">
         <div v-if="index < skillsPerRow"
@@ -96,7 +97,7 @@
 
     </div>
   </div>
-
+  <hr class="m-0">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-auto p-2" v-for="(technology, index) in store.user.technologies">
@@ -104,8 +105,7 @@
       </div>
     </div>
   </div>
-
-  <div class="bg-light bg-opacity-25">
+  <div class="bg-light bg-opacity-25 shadow">
     <div class="container py-4">
       <div class="row">
         <div class="col-12">
