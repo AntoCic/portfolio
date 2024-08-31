@@ -37,7 +37,7 @@ export const store = reactive({
 
             if (store.user.isLogged) store.onLogin();
 
-            console.log('cancellare : ', res.data);
+            // console.log('cancellare : ', res.data);
         }
         ).catch((err) => {
             location.reload();

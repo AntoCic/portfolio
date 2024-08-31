@@ -12,11 +12,10 @@
       </div>
     </div>
   </div>
-  <div class="container py-4">
-    <!-- ['d-inline-block', key % 2 === 0 ? 'animate-skill-down' : 'animate-skill-up'] -->
-    <div ref="skillContainer" class="w-100 text-center">
-      <template v-for="(key, index) in sequenceToShow">
-        <div v-if="index < quantityRowSkill"
+  <div class="container pt-4 pb-2" >
+    <div ref="skillContainer" class="w-100 text-center" style="min-height: 104px;">
+      <template v-for="(key, index) in skillsToShow">
+        <div v-if="index < skillsPerRow"
           :class="['d-inline-block', sequenceAnimation[index] ? 'animate-skill-down' : 'animate-skill-up']"
           style="width: 100px;">
           <img :src="`/img/skills/${store.user.technologies[key].toLowerCase()}.svg`"
@@ -142,13 +141,14 @@ export default {
       store,
       modalPass: false,
       userKey: '',
-      sequenceRandomSkill: [],
-      sequenceToShow: [],
+      animationIntervall: null,
+      randomSkillSequence: [],
+      skillsToShow: [],
       sequenceAnimation: [],
-      quantityRowSkill: 0,
-      counterIntervall: 1,
-      currentIndex: 0,
-      firstRound: true,
+      skillsPerRow: 0,
+      intervalCounter: 1,
+      currentSkillIndex: 0,
+      isFirstRound: true,
     }
   },
   methods: {
@@ -165,62 +165,67 @@ export default {
         let j;
         do {
           j = Math.floor(Math.random() * (this.store.user.technologies.length));
-        } while (this.sequenceRandomSkill.includes(j));
-        this.sequenceRandomSkill.push(j)
+        } while (this.randomSkillSequence.includes(j));
+        this.randomSkillSequence.push(j)
       }
-    }
-  },
-  mounted() {
-    this.quantityRowSkill = Math.floor(Number(this.$refs.skillContainer.offsetWidth) / 100);
-    if (this.quantityRowSkill > 8) {
-      this.quantityRowSkill = 7
-    }
-    this.createSequenceRandomSkill();
-    console.log(this.sequenceRandomSkill);
-
-    setInterval(() => {
-      const containerWidth = Number(this.$refs.skillContainer.offsetWidth);
-
-      this.quantityRowSkill = Math.floor(containerWidth / 100);
-      if (this.quantityRowSkill > 8) {
-        this.quantityRowSkill = 7
+    },
+    getSkillsPerRow() {
+      let qt = Math.floor(Number(this.$refs.skillContainer.offsetWidth) / 100);
+      if (qt > 8) {
+        qt = 7
       }
+      return qt
+    },
 
-      const targetIndex = this.counterIntervall + this.currentIndex;
+    animationSkills() {
+      this.skillsPerRow = this.getSkillsPerRow()
 
-      if (targetIndex <= this.quantityRowSkill + this.currentIndex) {
+      const targetIndex = this.intervalCounter + this.currentSkillIndex;
+
+      if (targetIndex <= this.skillsPerRow + this.currentSkillIndex) {
         let skillToAdd;
-        if (targetIndex > this.sequenceRandomSkill.length) {
-          skillToAdd = this.sequenceRandomSkill[this.counterIntervall - 1]
-          this.currentIndex = 0
+        if (targetIndex > this.randomSkillSequence.length) {
+          skillToAdd = this.randomSkillSequence[this.intervalCounter - 1]
+          this.currentSkillIndex = 0
         } else {
-          skillToAdd = this.sequenceRandomSkill[targetIndex - 1];
+          skillToAdd = this.randomSkillSequence[targetIndex - 1];
         }
 
-
-        if (this.firstRound === true) {
-          this.sequenceToShow.push(skillToAdd);
+        if (this.isFirstRound === true) {
+          this.skillsToShow.push(skillToAdd);
           if (this.sequenceAnimation.length === 0) {
             this.sequenceAnimation.push(true);
           } else {
             this.sequenceAnimation.push(!this.sequenceAnimation[this.sequenceAnimation.length - 1]);
           }
         } else {
-          this.sequenceToShow.splice(this.counterIntervall - 1, 1, skillToAdd);
-          this.sequenceAnimation[this.counterIntervall - 1] = !this.sequenceAnimation[this.counterIntervall - 1]
-
+          this.skillsToShow.splice(this.intervalCounter - 1, 1, skillToAdd);
+          this.sequenceAnimation[this.intervalCounter - 1] = !this.sequenceAnimation[this.intervalCounter - 1]
         }
-      } else if (targetIndex === this.quantityRowSkill + this.currentIndex + 1) {
-        this.currentIndex = targetIndex - 1;
-        this.firstRound = false
+      } else if (targetIndex === this.skillsPerRow + this.currentSkillIndex + 1) {
+        this.currentSkillIndex = targetIndex - 1;
+        this.isFirstRound = false
       }
 
-      this.counterIntervall = (this.counterIntervall % 8) + 1;
+      this.intervalCounter = (this.intervalCounter % 8) + 1;
+    },
 
-    }, 500);
+    startAnimationSkills() {
+      this.skillsPerRow = this.getSkillsPerRow()
+      this.createSequenceRandomSkill();
+      this.animationIntervall = setInterval(this.animationSkills, 500)
+    },
 
-
+    stopAnimationSkills() {
+      clearInterval(this.animationIntervall)
+    }
+  },
+  mounted() {
+    this.startAnimationSkills()
     this.$refs.caroselAutoplay.click();
+  },
+  unmounted() {
+    this.stopAnimationSkills()
   }
 }
 
